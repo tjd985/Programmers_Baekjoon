@@ -1,15 +1,14 @@
 function solution(n){
-  let arr = Array.from(Array(n+1), (index) => true);
+  let arr = Array.from(Array(n+1), (index, i) => i);
   
-  for(let i=2; i*i<=n; i++){
-    if(arr[i]){
-      for(let j=i*i; j<=n; j+=i){
-        arr[j] = false;
-      }
+  for(let i=2; arr[i]<=Math.sqrt(n+1); i++){
+    if(arr[i] !== 0){
+      for(let j=i*2; j<=n+1; j+=i){
+      arr[j] = 0;
+     }
     }
   }
-  
-  arr.splice(0,2,false, false);
-  let answer = arr.filter((index) => index === true);
-  return answer.length;
+  arr.splice(0,2);
+  arr = arr.filter((index) => index !== 0);
+  return arr.length;
 }
