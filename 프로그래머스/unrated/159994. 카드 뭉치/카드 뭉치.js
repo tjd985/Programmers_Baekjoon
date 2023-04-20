@@ -5,8 +5,7 @@ function solution(cards1, cards2, goal) {
     else {
       return "No";
       break;
-      }
-  
-    if(i === goal.length-1) return "Yes"
+    }
   }
+  return "Yes"
 }
