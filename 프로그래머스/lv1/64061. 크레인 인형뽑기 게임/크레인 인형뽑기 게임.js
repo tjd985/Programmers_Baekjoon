@@ -1,14 +1,14 @@
 function solution(board, moves) {
   let answer = [];
+  let cnt = 0;
+    
   let arr = Array.from(Array(board.length), (index) => Array(board.length).fill(0));
   for(let i=0; i<arr.length; i++){
     for(let j=0; j<arr.length; j++){
       arr[i][j] = board[j][i];
     }
   }
-  
-  let cnt = 0;
-  
+    
   arr = arr.map((index) => {
     return index.filter((index2)=> index2 !== 0);
   });
