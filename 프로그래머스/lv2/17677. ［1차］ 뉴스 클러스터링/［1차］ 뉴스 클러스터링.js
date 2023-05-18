@@ -1,6 +1,6 @@
 function solution(str1, str2) {
-  str1 = str1.split("").map((index) => index.toUpperCase()).join("");
-  str2 = str2.split("").map((index) => index.toUpperCase()).join("");
+  str1 = str1.toUpperCase();
+  str2 = str2.toUpperCase();
   
   let arr1 = [];
   let arr2 = [];
