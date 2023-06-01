@@ -1,5 +1,4 @@
 function solution(record) {
-  let answer = [];
   let nickName = {};
   
   for(let i=record.length-1; i>=0; i--){
