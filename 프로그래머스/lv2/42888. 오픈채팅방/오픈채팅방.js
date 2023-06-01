@@ -15,6 +15,6 @@ function solution(record) {
   return record.map((index) => {
     const [state, id, ] = [...index.split(" ")];
     if(state === "Enter") return `${nickName[id]}님이 들어왔습니다.`;
-    else if(state === "Leave") return `${nickName[id]}님이 나갔습니다.`;
+    if(state === "Leave") return `${nickName[id]}님이 나갔습니다.`;
   }).filter((index) => index !== undefined);
 }
