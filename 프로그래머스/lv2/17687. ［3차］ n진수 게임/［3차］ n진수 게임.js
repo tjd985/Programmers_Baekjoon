@@ -2,7 +2,7 @@ function solution(n, t, m, p) {
   let str = "0";
   let cnt = 0;
   p = p-1;
-  let answer = [];
+  let answer = "";
   const a = ["A", "B", "C", "D", "E", "F"];
   
   while(str.length < t*m){
@@ -15,8 +15,8 @@ function solution(n, t, m, p) {
   
   for(let i=p; i<str.length; i = i+m){
     if(answer.length === t) break;
-    answer.push(str[i]);
+    answer+=str[i];
   }
   
-  return answer.join("");
+  return answer;
 }
