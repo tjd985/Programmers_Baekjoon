@@ -7,10 +7,7 @@ function solution(n, t, m, p) {
   
   while(str.length < t*m){
     cnt++;
-    if(n > 10 && cnt >= 10 && cnt < n){
-      str += a[cnt%10];
-    }
-    else str += cnt.toString(n).toUpperCase();
+    str += cnt.toString(n).toUpperCase();
   }
   
   for(let i=p; i<str.length; i = i+m){
