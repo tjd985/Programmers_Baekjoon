@@ -17,5 +17,9 @@ inputt.sort((a, b) => {
   return a[1] - b[1];
 });
 
-inputt = inputt.map((v) => v.join(" ")).join("\n");
-console.log(inputt);
+let ans = "";
+for (let i = 0; i < inputt.length - 1; i++) {
+  ans += `${inputt[i][0]} ${inputt[i][1]} \n`;
+}
+ans += `${inputt[inputt.length - 1][0]} ${inputt[inputt.length - 1][1]}`;
+console.log(ans);
