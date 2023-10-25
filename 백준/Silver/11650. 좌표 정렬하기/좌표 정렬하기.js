@@ -9,8 +9,12 @@ let [foo, ...inputt] = input;
 
 inputt = inputt.map((value) => value.split(" ").map(Number));
 
-inputt.sort(([Ax, Ay], [Bx, By]) => {
-  return Ax === Bx ? Ay - By : Ax - Bx;
+inputt.sort((a, b) => {
+  if (a[0] !== b[0]) {
+    return a[0] - b[0];
+  }
+
+  return a[1] - b[1];
 });
 
 inputt = inputt.map((v) => v.join(" ")).join("\n");
