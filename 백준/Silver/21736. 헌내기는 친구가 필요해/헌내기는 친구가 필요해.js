@@ -2,18 +2,17 @@ let fs = require('fs');
 const { start } = require('repl');
 const filePath = process.platform === 'linux' ? '/dev/stdin' : 'input.txt';
 let input = fs.readFileSync(filePath).toString().trim().split("\n");
-// let input = fs.readFileSync(filePath).toString().trim().split(" ");
-// let input = fs.readFileSync(filePath).toString().trim().split("");
-// input = input.map((value) => Number(value));
 
-const firstInput = input.splice(0, 1)[0].split(" ");
-const [row, column] = [+firstInput[0], +firstInput[1]];
-const isVisit = Array.from({ length: row }, (value) => {
-  return value = new Array(column).fill(false);
+const firstInput = input.splice(0, 1)[0].split(" ").map((Number));
+const [row, column] = firstInput;
+const isVisit = Array.from({ length: row }, () => {
+  return new Array(column).fill(false);
 });
-let startX = 0;
-let startY = 0;
+const queue = [];
+const moveX = [-1, 0, 1, 0];
+const moveY = [0, -1, 0, 1];
 let flag = false;
+let meetPeopleCount = 0;
 
 for (let i = 0; i < row; i++) {
   if (flag) {
@@ -25,20 +24,16 @@ for (let i = 0; i < row; i++) {
       startX = i;
       startY = j;
       flag = true;
+
+      queue.push([i, j]);
     }
   }
 }
 
-const queue = [[startX, startY]];
-const moveX = [-1, 0, 1, 0];
-const moveY = [0, -1, 0, 1];
-let meetPeopleCount = 0;
-
 while (queue.length) {
   const [currentX, currentY] = queue.pop();
-  const canCount = input[currentX][currentY] === "P" && !isVisit[currentX][currentY];
 
-  if (canCount) {
+  if (input[currentX][currentY] === "P" && !isVisit[currentX][currentY]) {
     meetPeopleCount++;
   }
 
@@ -48,15 +43,11 @@ while (queue.length) {
     const nextX = currentX + moveX[i];
     const nextY = currentY + moveY[i];
 
-    const isOutOfRange = nextX < 0 || nextX > row - 1 || nextY < 0 || nextY > column - 1;
-
-    if (isOutOfRange) {
+    if (nextX < 0 || nextX > row - 1 || nextY < 0 || nextY > column - 1) {
       continue;
     }
 
-    const isOkay = !isVisit[nextX][nextY] && input[nextX][nextY] !== "X";
-
-    if (isOkay) {
+    if (!isVisit[nextX][nextY] && input[nextX][nextY] !== "X") {
       queue.push([nextX, nextY]);
     }
   }
