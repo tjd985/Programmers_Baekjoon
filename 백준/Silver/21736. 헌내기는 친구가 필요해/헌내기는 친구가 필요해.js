@@ -1,77 +1,65 @@
-function solution() {
-  const firstInput = input.splice(0, 1)[0].split(" ");
-  const [row, column] = [+firstInput[0], +firstInput[1]];
-  const isVisit = Array.from({ length: row }, (value) => {
-    return value = new Array(column).fill(false);
-  });
-  let startX = 0;
-  let startY = 0;
-  let flag = false;
+let fs = require('fs');
+const { start } = require('repl');
+const filePath = process.platform === 'linux' ? '/dev/stdin' : 'input.txt';
+let input = fs.readFileSync(filePath).toString().trim().split("\n");
+// let input = fs.readFileSync(filePath).toString().trim().split(" ");
+// let input = fs.readFileSync(filePath).toString().trim().split("");
+// input = input.map((value) => Number(value));
 
-  for (let i = 0; i < row; i++) {
-    if (flag) {
-      break;
-    }
+const firstInput = input.splice(0, 1)[0].split(" ");
+const [row, column] = [+firstInput[0], +firstInput[1]];
+const isVisit = Array.from({ length: row }, (value) => {
+  return value = new Array(column).fill(false);
+});
+let startX = 0;
+let startY = 0;
+let flag = false;
 
-    for (let j = 0; j < column; j++) {
-      if (input[i][j] === "I") {
-        startX = i;
-        startY = j;
-        flag = true;
-      }
-    }
+for (let i = 0; i < row; i++) {
+  if (flag) {
+    break;
   }
 
-  const queue = [[startX, startY]];
-  const moveX = [-1, 0, 1, 0];
-  const moveY = [0, -1, 0, 1];
-  let meetPeopleCount = 0;
-
-  while (queue.length) {
-    const [currentX, currentY] = queue.pop();
-    const canCount = input[currentX][currentY] === "P" && !isVisit[currentX][currentY];
-
-    if (canCount) {
-      meetPeopleCount++;
-    }
-
-    isVisit[currentX][currentY] = true;
-    
-    for (let i = 0; i < 4; i++) {
-      const nextX = currentX + moveX[i];
-      const nextY = currentY + moveY[i];
-
-      const isOutOfRange = nextX < 0 || nextX > row - 1 || nextY < 0 || nextY > column - 1;
-
-      if (isOutOfRange) {
-        continue;
-      }
-
-      const isOkay = !isVisit[nextX][nextY] && input[nextX][nextY] !== "X";
-
-      if (isOkay) {
-        queue.push([nextX, nextY]);
-      }
+  for (let j = 0; j < column; j++) {
+    if (input[i][j] === "I") {
+      startX = i;
+      startY = j;
+      flag = true;
     }
   }
-
-  meetPeopleCount === 0 ? console.log("TT") : console.log(meetPeopleCount);
 }
 
+const queue = [[startX, startY]];
+const moveX = [-1, 0, 1, 0];
+const moveY = [0, -1, 0, 1];
+let meetPeopleCount = 0;
 
-const readline = require('readline');
+while (queue.length) {
+  const [currentX, currentY] = queue.pop();
+  const canCount = input[currentX][currentY] === "P" && !isVisit[currentX][currentY];
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
+  if (canCount) {
+    meetPeopleCount++;
+  }
 
-let input = [];
+  isVisit[currentX][currentY] = true;
+  
+  for (let i = 0; i < 4; i++) {
+    const nextX = currentX + moveX[i];
+    const nextY = currentY + moveY[i];
 
-rl.on('line', function (line) {
-  input.push(line)
-})
-  .on('close', function () {
-    solution();
-    process.exit();
-});
+    const isOutOfRange = nextX < 0 || nextX > row - 1 || nextY < 0 || nextY > column - 1;
+
+    if (isOutOfRange) {
+      continue;
+    }
+
+    const isOkay = !isVisit[nextX][nextY] && input[nextX][nextY] !== "X";
+
+    if (isOkay) {
+      queue.push([nextX, nextY]);
+    }
+  }
+}
+
+meetPeopleCount === 0 ? console.log("TT") : console.log(meetPeopleCount);
