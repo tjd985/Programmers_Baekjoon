@@ -55,9 +55,7 @@ class BinaryTree {
   }
   
   preorder(fn) {
-    if (this.value) {
-      fn(this.value);
-    }
+    fn(this.value);
     
     if (this.left) {
       this.left.preorder(fn);
@@ -77,8 +75,8 @@ class BinaryTree {
       this.right.postorder(fn); 
     }
     
-    if (this.value) {
-      fn(this.value);
-    }
+    fn(this.value);
   }
 }
+
+console.log(solution([[5,3],[11,5],[13,3],[3,5],[6,1],[1,3],[8,6],[7,2],[2,2]]));
