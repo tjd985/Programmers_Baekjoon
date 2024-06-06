@@ -9,12 +9,8 @@ const numberList = numbers.split(" ").map(Number);
 const isVisit = Array.from({ length: length }, (_) => false);
 let result = 0;
 
-function findSequence(currentNumberList, currentIndex) {
-  const currentSum = currentNumberList.reduce((acc, num) => {
-    return acc + num;
-  }, 0);
-
-  if (currentSum === targetNumber && currentNumberList.length) {
+function findSequence(currentSum, currentIndex, count) {
+  if (currentSum === targetNumber && count) {
     result++;
   }
 
@@ -24,11 +20,11 @@ function findSequence(currentNumberList, currentIndex) {
     }
 
     isVisit[i] = true;
-    findSequence([...currentNumberList, numberList[i]], i);
+    findSequence(currentSum + numberList[i], i, count + 1);
     isVisit[i] = false;
   }
 }
 
-findSequence([], 0);
+findSequence(0, 0, 0);
 
 console.log(result);
