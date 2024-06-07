@@ -5,7 +5,7 @@ const [peopleLength, people] = fs
   .toString()
   .trim()
   .split("\n");
-const result = [];
+let result = 0;
 
 const sortedPeople = people
   .split(" ")
@@ -13,10 +13,10 @@ const sortedPeople = people
   .sort((a, b) => a - b);
 
 sortedPeople.reduce((acc, cur, index) => {
-  acc += cur;
-  result[index] = acc;
+  acc = acc + cur;
+  result += acc;
 
   return acc;
 }, 0);
 
-console.log(result.reduce((acc, cur) => acc + cur));
+console.log(result);
