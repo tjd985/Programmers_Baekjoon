@@ -14,12 +14,9 @@ function solution(arrayA, arrayB) {
   
   function getResult(targetFactorList, FactorType) {
     for (const factor of targetFactorList) {
-      // console.log(factor);
-      
       let isContinue = false;
 
       for (const value of FactorType === "A" ? arrayA : arrayB) {
-        // console.log(value);
         if (value % factor) {
           isContinue = true;
 
