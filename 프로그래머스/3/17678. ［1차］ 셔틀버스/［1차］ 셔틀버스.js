@@ -1,64 +1,27 @@
 function formatTime(time) {
-  const hour = time.getHours().toString();
-  const minute = time.getMinutes().toString();
+  const [hours, minutes] = time.split(":").map(Number);
   
-  return `${hour.padStart(2, 0)}:${minute.padStart(2, 0)}`;
+  return hours * 60 + minutes;
 }
 
 function solution(n, t, m, timetable) {
-  const busTime = new Date(2025, 0, 1, 9, 0);
-  const currentBus = [];
-  
-  const timeTable = timetable
-    .map((time) => {
-      const [hour, minute] = time.split(":").map(Number);
-      
-      return new Date(2025, 0, 1, hour, minute);
-    })
-    .sort((a, b) => b - a);
-  let lastCrewTime = null;
+  let answer = formatTime("09:00");
+  const timeTable = timetable.map(formatTime).sort((a, b) => a - b);
   
   for (let i = 0; i < n; i++) {
-    for (let j = 0; j < m; j++) {
-      if (!timeTable.length) {
-        return formatTime(busTime);
+    const boardingCrew = timeTable.filter((crew) => crew <= answer).length;
+    
+    if (i === n - 1) {
+      if (boardingCrew >= m) {
+        answer = timeTable[m - 1] - 1;
       }
       
-      const crewTime = timeTable.pop();
-      
-      if (crewTime > busTime) {
-        timeTable.push(crewTime);
-        currentBus.push(null);
-        
-        break;
-      }
-      
-      lastCrewTime = crewTime;
-      currentBus.push(crewTime);
+      break;
     }
     
-    if (i !== n - 1) {
-      busTime.setMinutes(busTime.getMinutes() + t);
-    }
+    answer += t;
+    timeTable.splice(0, Math.min(m, boardingCrew));
   }
   
-  currentBus.filter((current) => !!current);
-  
-  if (currentBus.filter((current) => !!current).length === n * m) {
-    const lastCrew = currentBus.pop();
-    
-    lastCrew.setMinutes(lastCrew.getMinutes() - 1);
-    
-    return formatTime(lastCrew);
-  }
-  
-  let answer = busTime;
-  
-  if (lastCrewTime && currentBus.pop() !== null) {
-    lastCrewTime.setMinutes(lastCrewTime.getMinutes() - 1);
-    
-    answer = lastCrewTime;
-  }
-  
-  return formatTime(answer);
+  return `${Math.floor(answer / 60)}`.padStart(2, 0) + ':' + `${answer % 60}`.padStart(2, 0);
 }
