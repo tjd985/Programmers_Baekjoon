@@ -5,20 +5,13 @@ function solution(operations) {
         const [char, num] = operator.split(" ");
         
         if (char === 'I') {
-            const targetNumber = Number(num);
-            
-            if (queue.length) {
-                const index = queue.findIndex((value) => targetNumber < value);
-              
-                if (index === -1) {
-                  queue.push(targetNumber);
-                } else {
-                  queue.splice(index, 0, targetNumber);
-                }
-            }
-          
-            if (!queue.length) {
-                queue.push(targetNumber);
+            const targetNumber = Number(num);            
+            const index = queue.findIndex((value) => targetNumber < value);
+
+            if (index === -1) {
+              queue.push(targetNumber);
+            } else {
+              queue.splice(index, 0, targetNumber);
             }
         }
         
