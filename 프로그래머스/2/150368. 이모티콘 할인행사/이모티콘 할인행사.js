@@ -2,7 +2,18 @@ function calculatePrice(price, sale) {
     return price * (100 - sale) / 100;
 }
 
+function getPriceResult(result) {
+  return result.reduce((acc, cur) => {
+    const [_, userMaximum, userCost = 0] = cur;
+    const [plus, sum] = acc;
 
+    if (userCost >= userMaximum) {
+      return [plus + 1, sum];
+    }
+
+    return [plus, sum + userCost];
+  }, [0, 0]);
+}
 
 function solution(users, emoticons) {
     const priceCacheMap = {};
@@ -12,12 +23,12 @@ function solution(users, emoticons) {
     
     function dfs(users, depth, salePercent) {
         const emoticon = emoticons[depth];
-        let salePrice = priceCacheMap[`${emoticon-salePercent}`];
+        let salePrice = priceCacheMap[`${emoticon}-${salePercent}`];
         
         if (!salePrice) {
             salePrice = calculatePrice(emoticon, salePercent);
             
-            priceCacheMap[`${emoticon-salePercent}`] = salePrice;
+            priceCacheMap[`${emoticon}-${salePercent}`] = salePrice;
         }
         
         const result = users.map((user) => {
@@ -31,16 +42,7 @@ function solution(users, emoticons) {
         });
       
         if (depth === emoticons.length - 1) {
-              const [plus, sum] = result.reduce((acc, cur) => {
-                  const [_, userMaximum, userCost = 0] = cur;
-                  const [plus, sum] = acc;
-
-                  if (userCost >= userMaximum) {
-                      return [plus + 1, sum];
-                  }
-
-                  return [plus, sum + userCost];
-              }, [0, 0]);
+              const [plus, sum] = getPriceResult(result);
 
               if (plus > plusCount) {
                   plusCount = plus;
@@ -52,7 +54,7 @@ function solution(users, emoticons) {
               if (plus === plusCount) {
                   priceSum = Math.max(priceSum, sum);
               }
-
+          
             return;
           }
         
