@@ -1,24 +1,3 @@
-function calcScore(lionInfo, apeachInfo) {
-  let lionScore = 0;
-  let apeachScore = 0;
-  
-  for (let i = 0; i < 11; i++) {
-    const score = 10 - i;
-    
-    if (lionInfo[i] > apeachInfo[i]) {
-      lionScore += score;
-      
-      continue;
-    }
-    
-    if (apeachInfo[i] > 0) {
-      apeachScore += score;
-    }
-  }
-  
-  return [lionScore, apeachScore];
-}
-
 function compareLower(lion, current) {
   for (let i = 10; i >= 0; i--) {
     if (lion[i] !== current[i]) {
@@ -30,45 +9,50 @@ function compareLower(lion, current) {
 }
 
 function solution(n, info) {
-  let maxGap = 1;
-  let answer = [-1];
-  
-  function runner(index, n, lionInfo) {
-    if (index === 11 || n === 0) {
-      if (n) {
-        lionInfo[10] += n;
-      }
-      
-      const [lionScore, apeachScore] = calcScore(lionInfo, info);
-      const gap = lionScore - apeachScore;
-      
-      if (gap > maxGap) {
-        maxGap = gap;
-        answer = lionInfo;
-      }
-      
-      if (gap === maxGap) {
-        answer = compareLower(lionInfo, answer);
-      }
-      
-      return;
+    let answer = [-1];
+    let pointGap = 0;
+    
+    function recursion(lionArrow, index, left) {
+        if (index === 11) {
+            lionArrow[lionArrow.length - 1] = left;
+            
+            let lionPoint = 0;
+            let apeachPoint = 0;
+            
+            for (let i = 0; i <= 10; i++) {
+                if (lionArrow[i] > info[i]) {
+                    lionPoint += 10 - i;
+                    
+                    continue;
+                }
+                
+                if (info[i]) {
+                    apeachPoint += 10 - i;
+                }
+            }
+            
+            if (lionPoint - apeachPoint > pointGap) {
+                pointGap = lionPoint - apeachPoint;
+                answer = lionArrow;
+            }
+            
+            if (lionPoint - apeachPoint === pointGap && pointGap) {
+                answer = answer.length === 1 ? lionArrow : compareLower(lionArrow, answer);
+            }
+            
+            return;
+        }
+        
+        const apeachArrow = info[index];
+        
+        if (left > apeachArrow) {
+            recursion([...lionArrow, apeachArrow + 1], index + 1, left - (apeachArrow + 1));
+        }
+        
+        recursion([...lionArrow, 0], index + 1, left);
     }
     
-    const apeachArrow = info[index];
+    recursion([], 0, n);
     
-    if (n > apeachArrow) {
-      const updateLionInfo = [...lionInfo];
-      const lionArrow = apeachArrow + 1;
-      
-      updateLionInfo[index] += lionArrow;
-      
-      runner(index + 1, n - lionArrow, updateLionInfo);
-    }
-    
-    runner(index + 1, n, lionInfo);
-  }
-  
-  runner(0, n, new Array(11).fill(0));
-  
-  return answer;
+    return answer;
 }
